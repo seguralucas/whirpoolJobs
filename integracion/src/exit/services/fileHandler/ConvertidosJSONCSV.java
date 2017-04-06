@@ -25,7 +25,7 @@ public class ConvertidosJSONCSV{
 		}
 		
 	   
-	   public AbstractJsonRestEstructura convertirCSVaJSONLineaALineaIncidentes(File fileCSV) {
+	   public AbstractJsonRestEstructura convertirCSVaJSONLineaALinea(File fileCSV) {
 		   try{
 			   if(br==null)
 			   br = new BufferedReader(

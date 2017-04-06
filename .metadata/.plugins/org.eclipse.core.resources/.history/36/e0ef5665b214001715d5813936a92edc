@@ -1,0 +1,9 @@
+package exit.services.singletons.peticiones;
+
+public class Peticion {
+	private String peticion;
+	private int codigoResponseEsperado;
+	private String cabecera;
+	
+	
+}

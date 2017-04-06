@@ -37,12 +37,19 @@ public class CSVHandler {
     		}
 		}
 		
-		private void escribirCampos(File file, String line) throws IOException{
+		private void escribirCampos(File file, String line,boolean onlyNotNull) throws IOException{
 		 	CsvWriter csvOutput = new CsvWriter(new FileWriter(file, true), RecuperadorPropiedadedConfiguracionEntidad.getInstance().getSeparadorCSV().charAt(0));
-            String[] campos= line.split(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getSeparadorCSVREGEX());
-            for(String c:campos){
-                csvOutput.write(insertarNoNull(c));        
+        	if(onlyNotNull){
+			 	String[] campos= line.split(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getSeparadorCSVREGEX());
+	            for(String c:campos)
+	            		csvOutput.write(insertarNoNull(c));             
+        	}
+            else{
+			 	String[] campos= line.split(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getSeparadorCSVREGEX(),-1);
+	            for(String c:campos)
+	            	csvOutput.write(insertarNoNull(c==null?"":c));   
             }
+        	
             csvOutput.endRecord();		 
             csvOutput.close();
 		}
@@ -51,16 +58,16 @@ public class CSVHandler {
 			crearCabecer(file,cabeceraFichero);
 		}	*/
 		
-		 public void escribirCSV(File file,String line, String cabecera) throws IOException{
+		 public void escribirCSV(File file,String line, String cabecera,boolean onlyNotNull) throws IOException{
 	            crearCabecer(file,cabecera);
-	            escribirCampos(file,line);
+	            escribirCampos(file,line,onlyNotNull);
 		 }
 		 
 		 public void escribirCSV(File file,String line, boolean tieneCabeceraDefault) throws IOException{
 			 if(tieneCabeceraDefault)
-				 escribirCSV(file,line,cabeceraFichero);
+				 escribirCSV(file,line,cabeceraFichero,true);
 			 else
-				 escribirCampos(file,line);
+				 escribirCampos(file,line,true);
 		 }
 		 
 		 public void escribirCSV(File file,String line) throws IOException{
@@ -70,6 +77,12 @@ public class CSVHandler {
 		 public void escribirCSV(String path,String line) throws IOException{
 			 	escribirCSV(DirectorioManager.getDirectorioFechaYHoraInicio(path),line);
 		 }
+		 
+		 public void escribirCSV(String path,String line, String cabecera, boolean onlyNotNull) throws IOException{
+			 	escribirCSV(DirectorioManager.getDirectorioFechaYHoraInicio(path),line,cabecera, onlyNotNull);
+		 }
+		 
+		 
 		 public void escribirCSV(String path,String line,boolean cabeceraDefecto) throws IOException{
 			 	escribirCSV(DirectorioManager.getDirectorioFechaYHoraInicio(path),line,cabeceraDefecto);
 		 }
@@ -106,6 +119,9 @@ public class CSVHandler {
 		 public synchronized void escribirErrorException(JSONHandler json,StackTraceElement[] stackArray) {
 			 escribirErrorException(json.getLine(),stackArray,true);
 		 }
+		 public synchronized void escribirErrorException(String linea) {
+			 escribirErrorException(linea,null,false);
+		 }
 		 public synchronized void escribirErrorException(String line,StackTraceElement[] stackArray,boolean logueaEnCsv) {
 				try {
 					if(line!=null){
@@ -113,9 +129,10 @@ public class CSVHandler {
 							this.escribirCSV(PATH_ERROR_EXCEPTION,line);
 						this.escribirCSV(PATH_ERROR_EXCEPTION_LOG,line);
 					}
-					for(StackTraceElement ste: stackArray){
-					     this.escribirCSV(PATH_ERROR_EXCEPTION_LOG,"FileName: "+ste.getFileName()+" Metodo: "+ste.getMethodName()+"Clase "+ste.getClassName()+" Linea "+ste.getLineNumber(),false);
-					}		
+					if(stackArray!=null)
+						for(StackTraceElement ste: stackArray){
+						     this.escribirCSV(PATH_ERROR_EXCEPTION_LOG,"FileName: "+ste.getFileName()+" Metodo: "+ste.getMethodName()+"Clase "+ste.getClassName()+" Linea "+ste.getLineNumber(),false);
+						}		
 					this.escribirCSV(PATH_ERROR_EXCEPTION_LOG,ConstantesGenerales.SEPARADOR_ERROR_TRYCATCH);
 					} catch (IOException e) {
 					e.printStackTrace();

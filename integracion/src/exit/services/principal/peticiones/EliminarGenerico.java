@@ -13,7 +13,7 @@ import exit.services.fileHandler.ConstantesGenerales;
 public class EliminarGenerico extends EliminarAbstractoEntidad {
 	
 	@Override
-	protected Object procesarPeticionOK(BufferedReader in, Long id,int responseCode) throws Exception{
+	protected Object procesarPeticionOK(BufferedReader in, String id,int responseCode) throws Exception{
 		CSVHandler csv= new CSVHandler();
 	    File fichero = DirectorioManager.getDirectorioFechaYHoraInicio(CSVHandler.PATH_BORRADOS_OK);
         csv.escribirCSV(fichero, "Id eliminado: "+id);
@@ -21,7 +21,7 @@ public class EliminarGenerico extends EliminarAbstractoEntidad {
 	}
 
 	@Override
-	protected Object procesarPeticionError(BufferedReader in,  Long id, int responseCode) throws Exception{
+	protected Object procesarPeticionError(BufferedReader in,  String id, int responseCode) throws Exception{
 		String path=("error_borrado_servidor_codigo_"+responseCode+".txt");
 	    File fichero = DirectorioManager.getDirectorioFechaYHoraInicio(path);
 	    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fichero, true)));

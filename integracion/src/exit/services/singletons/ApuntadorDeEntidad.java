@@ -31,9 +31,17 @@ public class ApuntadorDeEntidad {
     		return false;
     	puntero++;
     	RecuperadorPropiedadedConfiguracionEntidad.getInstance().reiniciar();
-    	RecuperadorFormato.getInstancia().reiniciar();
-    	RecuperadorPropierdadesJson.getInstancia().reiniciar();
-    	AlmacenadorFechaYHora.reiniciar();
+    	switch(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getAction().toUpperCase()){
+		case RecuperadorPropiedadedConfiguracionEntidad.ACCION_CSVASERVICIO:
+			RecuperadorFormato.getInstancia().reiniciar();
+	    	RecuperadorPropierdadesJson.getInstancia().reiniciar();
+	    	AlmacenadorFechaYHora.reiniciar();
+	    	;break;
+		case RecuperadorPropiedadedConfiguracionEntidad.ACCION_SERVICIOAACSV:
+			RecuperadorMapeoCsv.getInstancia().reiniciar();
+			RecuperadorEspecificacionesCSV.getInstancia().reiniciar();
+			break;
+	}    	
     	return true;
     	
     }

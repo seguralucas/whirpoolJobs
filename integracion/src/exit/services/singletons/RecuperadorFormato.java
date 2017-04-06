@@ -28,7 +28,7 @@ public class RecuperadorFormato {
 		return instancia;
 	}
 	private RecuperadorFormato(){
-		File f= new File(ConstantesGenerales.PATH_CONFIGURACION+"/"+ApuntadorDeEntidad.getInstance().getEntidadActual()+"/formatoJson.json");
+		File f= new File(ConstantesGenerales.PATH_CONFIGURACION_ENTIDADES+"/"+ApuntadorDeEntidad.getInstance().getEntidadActual()+"/formatoJson.json");
 		String line;
 		StringBuilder sb= new StringBuilder();
 		try(BufferedReader br= new BufferedReader(new FileReader(f))){

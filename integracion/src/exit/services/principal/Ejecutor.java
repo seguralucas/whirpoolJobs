@@ -1,16 +1,25 @@
 package exit.services.principal;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
+import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import exit.services.excepciones.ExceptionBiactiva;
 import exit.services.fileHandler.CSVHandler;
 import exit.services.json.AbstractJsonRestEstructura;
 import exit.services.json.JSONHandler;
 import exit.services.json.JsonGenerico;
+import exit.services.principal.peticiones.GetAbstractoGenerico;
 import exit.services.principal.peticiones.GetExistFieldURLQueryRightNow;
-import exit.services.principal.peticiones.InsertarAbstractoEntidades;
-import exit.services.principal.peticiones.InsertarGenerico;
+import exit.services.principal.peticiones.GetVTEXOMS;
+import exit.services.principal.peticiones.GetVTEXAbstract;
+import exit.services.principal.peticiones.GetVTEXMasterData;
+import exit.services.principal.peticiones.PostAbstractoEntidades;
+import exit.services.principal.peticiones.PostGenerico;
 import exit.services.principal.peticiones.UpdateGenericoRightNow;
 import exit.services.singletons.ApuntadorDeEntidad;
 import exit.services.singletons.RecuperadorPropiedadedConfiguracionEntidad;
@@ -41,35 +50,94 @@ public class Ejecutor {
 		   }
 		}
 		GetExistFieldURLQueryRightNow get= new GetExistFieldURLQueryRightNow();
-		String id=(String)get.realizarPeticionString(parametros);
+		String id=(String)get.realizarPeticion(parametros);
 		if(id!=null){
-			Long idL= Long.parseLong(id);
 			UpdateGenericoRightNow update= new UpdateGenericoRightNow();
-			update.realizarPeticion(idL, jsonH);
+			update.realizarPeticion(id, jsonH);
 		}
 		else{
-			InsertarGenerico insertar= new InsertarGenerico();
+			PostGenerico insertar= new PostGenerico();
 			insertar.realizarPeticion(jsonH);
 		}
 		}
 		catch(Exception e){
-			InsertarGenerico insertar= new InsertarGenerico();
+			PostGenerico insertar= new PostGenerico();
 			insertar.realizarPeticion(jsonH);			
 		}
 	}
 	
-	public void ejecutorGenerico(AbstractJsonRestEstructura jsonEst){
+	public void ejecutorGenericoCsvAServicio(AbstractJsonRestEstructura jsonEst){
 		JSONHandler jsonH;
 			try{
 				jsonH=jsonEst.createJson();
 				System.out.println(jsonH.toStringNormal());
-				InsertarAbstractoEntidades insertar= new InsertarGenerico();
+				PostAbstractoEntidades insertar= new PostGenerico();
 				insertar.realizarPeticion(jsonH);
 			}
 			catch(Exception e){
 				escribirExcepcion(e,jsonEst);
 			}
 	}
+	
+	private String getParametroDateOMG(Integer cantDias){
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+		String hasta = sdf.format(new Date());
+		Date d= new Date();
+		Calendar c = Calendar.getInstance();
+		c.setTime(d);
+		c.add(Calendar.DATE, -1*cantDias);
+		d.setTime( c.getTime().getTime() );
+		String desde=sdf.format(d);
+		return "f_creationDate=creationDate:%5B"+desde+"T02:00:00.000Z+TO+"+hasta+"T01:59:59.999Z%5D";		    
+	}
+
+	private String getParametroDateMasterData(Integer cantDias){
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+		String hasta = sdf.format(new Date());
+		Date d= new Date();
+		Calendar c = Calendar.getInstance();
+		c.setTime(d);
+		c.add(Calendar.DATE, -1*cantDias);
+		d.setTime( c.getTime().getTime() );
+		String desde=sdf.format(d);
+		return "_where=createdIn  between "+desde+" AND "+hasta;		    
+	}
+
+	
+	public Object ejecutorServicioACsvVTEXOMS(String cantidadDias) throws UnsupportedEncodingException{
+		GetVTEXAbstract getVTEXGenerico= new GetVTEXOMS();
+		String identificadorAtr=RecuperadorPropiedadedConfiguracionEntidad.getInstance().getIdentificadorAtributo();
+		String cabeceraUrl=RecuperadorPropiedadedConfiguracionEntidad.getInstance().getFiltros().replaceAll(identificadorAtr+"NRO_PAG"+identificadorAtr, String.valueOf(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getPaginaActual()));
+		Integer cantDias=Integer.parseInt(cantidadDias);
+		String parametroDate=getParametroDateOMG(cantDias);
+		String parametrosFianl;
+		if(cantDias==-1)
+			parametrosFianl=cabeceraUrl;
+		else
+			parametrosFianl=cabeceraUrl+"&"+parametroDate;
+	
+		System.out.println(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getUrl()+"?"+parametrosFianl);		
+		return getVTEXGenerico.realizarPeticion(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getUrl()+"?"+parametrosFianl);
+	}
+	
+	public Object ejecutorServicioACsvVTEXMasterData(String cantidadDias) throws UnsupportedEncodingException{
+		GetAbstractoGenerico getGenerico= new GetVTEXMasterData();
+		String identificadorAtr=RecuperadorPropiedadedConfiguracionEntidad.getInstance().getIdentificadorAtributo();
+		String cabeceraUrl=RecuperadorPropiedadedConfiguracionEntidad.getInstance().getFiltros().replaceAll(identificadorAtr+"NRO_PAG"+identificadorAtr, String.valueOf(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getPaginaActual()));
+		Integer cantDias=Integer.parseInt(cantidadDias);
+		String parametroDate=getParametroDateMasterData(cantDias);
+		String parametrosFianl;
+		if(cantDias==-1)
+			parametrosFianl=cabeceraUrl;
+		else
+			parametrosFianl=cabeceraUrl+"&"+parametroDate;
+	
+		System.out.println(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getUrl()+"/search?"+parametrosFianl);		
+		return getGenerico.realizarPeticion(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getUrl()+"/search?"+parametrosFianl);
+	}
+	
+	
+	
 	
 	private void escribirExcepcion(Exception e, AbstractJsonRestEstructura jsonEst){
 		e.printStackTrace();
@@ -86,19 +154,32 @@ public class Ejecutor {
 		ApuntadorDeEntidad.getInstance().siguienteEntidad();
 		return ejecutar(nombreMetodo,null,jsonEst);
 	}
-		
+	public Object ejecutar(String nombreMetodo, String parametros) throws ExceptionBiactiva{
+		return ejecutar(nombreMetodo,parametros,null);
+	}
 	public Object ejecutar(String nombreMetodo, String parametros, AbstractJsonRestEstructura jsonEst) throws ExceptionBiactiva{
 		Class<Ejecutor> a= Ejecutor.class;
 		try {
 			Method m;
 			Object o;
 			if(parametros!=null){
-				m= a.getMethod(nombreMetodo, parametros.getClass(),jsonEst.getClass().getSuperclass());
-				o=m.invoke(this,parametros,jsonEst);
+				if(jsonEst!=null){
+					m= a.getMethod(nombreMetodo, parametros.getClass(),jsonEst.getClass().getSuperclass());
+					o=m.invoke(this,parametros,jsonEst);
+				}
+				else{
+					m= a.getMethod(nombreMetodo, parametros.getClass());
+					o=m.invoke(this,parametros);				}
 			}
 			else{
-				m=a.getMethod(nombreMetodo,jsonEst.getClass().getSuperclass());
-				o=m.invoke(this,jsonEst);
+				if(jsonEst!=null){
+					m=a.getMethod(nombreMetodo,jsonEst.getClass().getSuperclass());
+					o=m.invoke(this,jsonEst);
+				}
+				else{
+					m=a.getMethod(nombreMetodo);
+					o=m.invoke(this);
+				}
 			}
 			return o;
 		} catch (Exception e) {

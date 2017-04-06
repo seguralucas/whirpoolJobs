@@ -1,0 +1,5 @@
+package exit.services.singletons.peticiones;
+
+public class RecuperadorPeticiones {
+
+}

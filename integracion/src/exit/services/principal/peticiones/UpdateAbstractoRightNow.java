@@ -10,6 +10,7 @@ import java.net.HttpURLConnection;
 import exit.services.fileHandler.CSVHandler;
 import exit.services.json.JSONHandler;
 import exit.services.singletons.RecuperadorPropiedadedConfiguracionEntidad;
+import exit.services.singletons.peticiones.RecuperadorPeticiones;
 
 public abstract class UpdateAbstractoRightNow {
 	
@@ -17,11 +18,11 @@ public abstract class UpdateAbstractoRightNow {
 		return realizarPeticion(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getUrl(),null,json);
 	}
 	
-	public Object realizarPeticion(Long id, JSONHandler json){
+	public Object realizarPeticion(String id, JSONHandler json){
 		return realizarPeticion(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getUrl(),id,json);
 	}
 	 
-	 public Object realizarPeticion(String url,Long id, JSONHandler json){
+	 public Object realizarPeticion(String url,String id, JSONHandler json){
 	        try{
 	        	WSConector ws = new WSConector("UPDATERIGHTNOW",url+"/"+id,"application/json");
 	        	HttpURLConnection conn=ws.getConexion();
@@ -33,7 +34,7 @@ public abstract class UpdateAbstractoRightNow {
 	            int responseCode = conn.getResponseCode();
 	            BufferedReader in;
 	            Object o;
-	            if(responseCode == 200){
+	            if(responseCode == RecuperadorPeticiones.getInstance().getUpdate().getCodigoResponseEsperado()){
 	            	in = new BufferedReader(
 		                    new InputStreamReader(conn.getInputStream()));
 	            	o=procesarPeticionOK(in, id,responseCode,  json);
@@ -61,6 +62,6 @@ public abstract class UpdateAbstractoRightNow {
 				return null;
 			}
        }
-		abstract Object procesarPeticionOK(BufferedReader in, Long id,int responseCode, JSONHandler json) throws Exception;
-		abstract Object procesarPeticionError(BufferedReader in, Long id, int responseCode, JSONHandler json) throws Exception;
+		abstract Object procesarPeticionOK(BufferedReader in, String id,int responseCode, JSONHandler json) throws Exception;
+		abstract Object procesarPeticionError(BufferedReader in, String id, int responseCode, JSONHandler json) throws Exception;
 }

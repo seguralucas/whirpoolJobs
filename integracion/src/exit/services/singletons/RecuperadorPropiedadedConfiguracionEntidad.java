@@ -12,12 +12,16 @@ import exit.services.fileHandler.DirectorioManager;
 
 public class RecuperadorPropiedadedConfiguracionEntidad {
 	HashMap<String, String> mapPropiedades;
+	private int paginaActual;
 	private static RecuperadorPropiedadedConfiguracionEntidad instance;
+	public static final String ACCION_CSVASERVICIO="CSVASERVICIO";
+	public static final String ACCION_SERVICIOAACSV="SERVICIOAACSV";
     private RecuperadorPropiedadedConfiguracionEntidad(){
+    	paginaActual=1;
     	mapPropiedades=new HashMap<String,String>();
         Properties props = new Properties();
         try{
-		props.load(new FileReader(ConstantesGenerales.PATH_CONFIGURACION+"/"+ApuntadorDeEntidad.getInstance().getEntidadActual()+"/ConfiguracionEntidad.properties"));
+		props.load(new FileReader(ConstantesGenerales.PATH_CONFIGURACION_ENTIDADES+"/"+ApuntadorDeEntidad.getInstance().getEntidadActual()+"/ConfiguracionEntidad.properties"));
 		for(String key : props.stringPropertyNames()) 
 			  mapPropiedades.put(key, props.getProperty(key));
         }
@@ -74,6 +78,18 @@ public class RecuperadorPropiedadedConfiguracionEntidad {
 
 	public String getParametroPreEjecutor() {
 		return getValueMap("parametroPreEjecutor");
+	}
+	
+	public String getIterarSobre() {
+		return getValueMap("iterarSobre");
+	}
+	
+	public boolean isPaginado() {
+		return getValueMap("paaginado")==null?false:getValueMap("paaginado").equalsIgnoreCase("true");
+	}
+	
+	public String getIdIteracion() {
+		return getValueMap("idIteracion");
 	}
 	
 	public String getMetodoEjecutor() {
@@ -137,6 +153,23 @@ public class RecuperadorPropiedadedConfiguracionEntidad {
 		return getValueMap("identificadorAtributo");
 	}
 	
+	
+	public String getFiltros(){
+			return getValueMap("filtros");
+	}
+	
+	public int getPaginaActual() {
+		return paginaActual;
+	}	
+	public void incresePaginaActual() {
+		paginaActual++;
+	}
+
+	public void setPaginaActual(int paginaActual) {
+		this.paginaActual = paginaActual;
+	}
+	
+
 	public boolean isBorrarDataSetAlFinalizar() {
 		String borrarDataSetAlFinalizar=getValueMap("borrarDataSetAlFinalizar");
 		if(borrarDataSetAlFinalizar==null)

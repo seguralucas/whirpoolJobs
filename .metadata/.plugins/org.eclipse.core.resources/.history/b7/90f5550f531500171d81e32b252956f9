@@ -1,0 +1,55 @@
+package exit.services.principal.peticiones;
+
+import java.io.BufferedReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import exit.services.singletons.RecuperadorPropiedadedConfiguracionEntidad;
+
+public class GetOrdenesVTEX extends GetAbstractoGenerico{
+
+	@Override
+	Object procesarPeticionOK(BufferedReader in, Long id, int responseCode) throws Exception {
+
+		return null;
+	}
+
+	@Override
+	Object procesarPeticionError(BufferedReader in, Long id, int responseCode) throws Exception {
+
+		return null;
+	}
+
+	@Override
+	Object procesarPeticionOK(BufferedReader in, int responseCode) throws Exception {
+		JSONObject jsonObject = ConvertidorJson.convertir(in);
+		JSONArray jsonArrayItems= (JSONArray) jsonObject.get(("list"));
+		ExecutorService workers = Executors.newFixedThreadPool(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getNivelParalelismo());      	
+	    List<Callable<Void>> tasks = new ArrayList<>();
+		System.out.println("Subiendo el paralelismo a "+RecuperadorPropiedadedConfiguracionEntidad.getInstance().getNivelParalelismo());
+		for(int i=0;i<jsonArrayItems.size();i++){
+			final Integer j=i;
+			tasks.add(new Callable<Void>() {
+		        public Void call() {
+    		JSONObject jsonItem=(JSONObject)jsonArrayItems.get(j);
+			Long id=(Long)jsonItem.get("id");
+			e.realizarPeticion(id);
+			return null;
+		        }
+			});
+		return null;
+	}
+
+	@Override
+	Object procesarPeticionError(BufferedReader in, int responseCode) throws Exception {
+
+		return null;
+	}
+
+}

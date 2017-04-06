@@ -24,13 +24,13 @@ import exit.services.singletons.RecuperadorPropiedadedConfiguracionEntidad;
 public class GetIdsAEliminar extends GetAbstractoGenerico{
 
 	@Override
-	protected Object procesarPeticionOK(BufferedReader in, Long id, int responseCode) throws Exception {
+	protected Object procesarPeticionOK(BufferedReader in, String id, int responseCode) throws Exception {
 			//NO APLICA		
 		return null;
 	}
 
 	@Override
-	protected Object procesarPeticionError(BufferedReader in, Long id, int responseCode) throws Exception {
+	protected Object procesarPeticionError(BufferedReader in, String id, int responseCode) throws Exception {
 		// NO APLICA
 		return null;		
 	}
@@ -50,7 +50,7 @@ public class GetIdsAEliminar extends GetAbstractoGenerico{
     		JSONObject jsonItem;
 			jsonItem=(JSONObject)jsonArrayItems.get(j);
 			Long id=(Long)jsonItem.get("id");
-			e.realizarPeticion(id);
+			e.realizarPeticion(String.valueOf(id));
 			return null;
 		        }
 			});

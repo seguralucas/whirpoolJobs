@@ -1,0 +1,16 @@
+package exit.services.principal.automata;
+
+public class AutomataFinito {
+	
+	public static void main(String[] args) {
+		AutomataFinito.leer("a(\"a.b.c\", \"tex,to\")");
+	}
+	public static String leer(String cadena){
+		if(cadena.matches(".+\\(")){
+			System.out.println("match");
+		}
+		else
+			System.out.println("no match");
+		return null;
+	}
+}

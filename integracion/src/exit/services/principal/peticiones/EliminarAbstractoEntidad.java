@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 
 import exit.services.fileHandler.CSVHandler;
 import exit.services.singletons.RecuperadorPropiedadedConfiguracionEntidad;
+import exit.services.singletons.peticiones.RecuperadorPeticiones;
 
 public abstract class EliminarAbstractoEntidad{
 	
@@ -15,18 +16,18 @@ public abstract class EliminarAbstractoEntidad{
 		return realizarPeticion(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getUrl(),null);
 	}
 	
-	public Object realizarPeticion(Long id){
+	public Object realizarPeticion(String id){
 		return realizarPeticion(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getUrl(),id);
 	}
 	 
-	 public Object realizarPeticion(String url,Long id){
+	 public Object realizarPeticion(String url,String id){
 	        try{
 	        	WSConector ws = new WSConector("DELETE",url+"/"+id,"application/json");
 	        	HttpURLConnection conn=ws.getConexion();
 	            int responseCode = conn.getResponseCode();
 	            BufferedReader in;
 	            Object o;
-	            if(responseCode == 200){
+	            if(responseCode == RecuperadorPeticiones.getInstance().getDelete().getCodigoResponseEsperado()){
 	            	in = new BufferedReader(
 		                    new InputStreamReader(conn.getInputStream()));
 	            	o=procesarPeticionOK(in, id,responseCode);
@@ -54,5 +55,5 @@ public abstract class EliminarAbstractoEntidad{
 				return null;
 			}
        }
-		abstract Object procesarPeticionOK(BufferedReader in, Long id,int responseCode) throws Exception;
-		abstract Object procesarPeticionError(BufferedReader in, Long id, int responseCode) throws Exception;}
+		abstract Object procesarPeticionOK(BufferedReader in, String id,int responseCode) throws Exception;
+		abstract Object procesarPeticionError(BufferedReader in, String id, int responseCode) throws Exception;}

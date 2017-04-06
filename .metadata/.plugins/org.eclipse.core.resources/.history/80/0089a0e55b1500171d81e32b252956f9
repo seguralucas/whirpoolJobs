@@ -1,0 +1,17 @@
+package exit.services.singletons;
+
+public class RecuperadorMapeoCsv {
+
+	private static RecuperadorMapeoCsv instancia=null;
+	
+	public static RecuperadorFormato getInstancia(){
+		if(instancia==null)
+			instancia= new RecuperadorFormato();
+		return instancia;
+	}
+	
+	private RecuperadorMapeoCsv(){
+		
+	}
+	
+}

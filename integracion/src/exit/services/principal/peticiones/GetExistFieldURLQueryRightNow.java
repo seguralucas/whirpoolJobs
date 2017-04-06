@@ -14,13 +14,13 @@ import exit.services.fileHandler.DirectorioManager;
 public class GetExistFieldURLQueryRightNow extends GetAbstractoGenerico{
 
 	@Override
-	Object procesarPeticionOK(BufferedReader in, Long id, int responseCode) throws Exception {
+	Object procesarPeticionOK(BufferedReader in, String id, int responseCode) throws Exception {
 		// No utilizado
 		return null;
 	}
 
 	@Override
-	Object procesarPeticionError(BufferedReader in, Long id, int responseCode) throws Exception {
+	Object procesarPeticionError(BufferedReader in, String id, int responseCode) throws Exception {
 		// No utilizado
 		return null;
 	}

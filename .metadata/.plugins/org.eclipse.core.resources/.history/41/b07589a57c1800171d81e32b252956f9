@@ -1,0 +1,15 @@
+package exit.services.singletos.funciones;
+
+public class FuncionesWhirpool {
+
+	public String splitearOrden(String cadena) {
+		char[] chars=cadena.toCharArray();
+		boolean bandera=false;
+		for(int i=0;i<chars.length;i++){
+			if(chars >='0' && chars<='9'){
+				
+			}
+		}
+		return cadena;
+	}
+}

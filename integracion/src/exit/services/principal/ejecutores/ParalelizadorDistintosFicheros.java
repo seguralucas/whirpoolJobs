@@ -17,8 +17,8 @@ import exit.services.fileHandler.FilesAProcesarManager;
 import exit.services.json.AbstractJsonRestEstructura;
 import exit.services.json.JSONHandler;
 import exit.services.principal.Ejecutor;
-import exit.services.principal.peticiones.InsertarAbstractoEntidades;
-import exit.services.principal.peticiones.InsertarGenerico;
+import exit.services.principal.peticiones.PostAbstractoEntidades;
+import exit.services.principal.peticiones.PostGenerico;
 import exit.services.singletons.RecuperadorPropiedadedConfiguracionEntidad;
 import exit.services.util.Contador;
 
@@ -46,7 +46,7 @@ public class ParalelizadorDistintosFicheros {
 				        	ConvertidosJSONCSV csvThread= new ConvertidosJSONCSV();
 			        		AbstractJsonRestEstructura jsonEst=null;
 			        		while(!csvThread.isFin()){
-			        			jsonEst = csvThread.convertirCSVaJSONLineaALineaIncidentes(file);
+			        			jsonEst = csvThread.convertirCSVaJSONLineaALinea(file);
 			        			if(jsonEst != null && jsonEst.validarCampos()){
 				        			Ejecutor e= new Ejecutor();
 				        			e.ejecutar(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getMetodoEjecutor(),RecuperadorPropiedadedConfiguracionEntidad.getInstance().getParametroEjecutor(),jsonEst);

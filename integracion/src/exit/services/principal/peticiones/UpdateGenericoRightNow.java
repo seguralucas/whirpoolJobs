@@ -15,15 +15,15 @@ import exit.services.singletons.RecuperadorPropiedadedConfiguracionEntidad;
 public class UpdateGenericoRightNow extends UpdateAbstractoRightNow{
 
 	@Override
-	protected Object procesarPeticionOK(BufferedReader in, Long id, int responseCode, JSONHandler json) throws Exception {
+	protected Object procesarPeticionOK(BufferedReader in, String id, int responseCode, JSONHandler json) throws Exception {
 		CSVHandler csv= new CSVHandler();
 	    File fichero = DirectorioManager.getDirectorioFechaYHoraInicio(CSVHandler.PATH_UPDATES_OK);
-        csv.escribirCSV(fichero, id+RecuperadorPropiedadedConfiguracionEntidad.getInstance().getSeparadorCSV()+json.getLine(), "ID"+RecuperadorPropiedadedConfiguracionEntidad.getInstance().getSeparadorCSV()+CSVHandler.cabeceraFichero);        
+        csv.escribirCSV(fichero, id+RecuperadorPropiedadedConfiguracionEntidad.getInstance().getSeparadorCSV()+json.getLine(), "ID"+RecuperadorPropiedadedConfiguracionEntidad.getInstance().getSeparadorCSV()+CSVHandler.cabeceraFichero,true);        
         return null;
 	}
 
 	@Override
-	 protected Object procesarPeticionError(BufferedReader in, Long id, int responseCode, JSONHandler json) throws Exception {
+	 protected Object procesarPeticionError(BufferedReader in, String id, int responseCode, JSONHandler json) throws Exception {
 		String path=("error_update_servidor_codigo_"+responseCode+".txt");
 	    File fichero = DirectorioManager.getDirectorioFechaYHoraInicio(path);
 	    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fichero, true)));

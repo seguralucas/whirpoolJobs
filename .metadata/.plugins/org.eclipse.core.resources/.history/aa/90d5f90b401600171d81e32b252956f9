@@ -1,0 +1,25 @@
+package exit.services.principal.automata;
+
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class AutomataFinito {
+	private cadenaRestante;
+	public static void main(String[] args) {
+		AutomataFinito a= new AutomataFinito("a(\"a.b.c\", \"tex,to\")");
+		a.leer();
+	}
+	
+	public String leer(String cadena){
+		ArrayList<String> tipos= new ArrayList<String>();
+		ArrayList<String> valores= new ArrayList<String>();
+		Pattern p = Pattern.compile("([a-zA-Z0-9][a-zA-Z0-9]*)");
+		Matcher m = p.matcher(cadena);
+		if (m.find())
+		    System.out.println(cadena.substring(m.end()));
+		else
+			System.out.println("No match");
+		return null;
+	}
+}

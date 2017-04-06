@@ -6,8 +6,12 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URL;
 
+import org.json.simple.JSONObject;
+
 import Decoder.BASE64Encoder;
 import exit.services.singletons.RecuperadorPropiedadedConfiguracionEntidad;
+import exit.services.singletons.peticiones.Peticion;
+import exit.services.singletons.peticiones.RecuperadorPeticiones;
 
 
 
@@ -37,30 +41,44 @@ public class WSConector {
 		}
 		else
 			conn = (HttpURLConnection) url.openConnection();
+		Peticion peticion = null;
 		if(method.equalsIgnoreCase("POST")){
-				conn.setRequestMethod("POST");
+			peticion=RecuperadorPeticiones.getInstance().getPost();
 		}
 		else if(method.equalsIgnoreCase("UPDATERIGHTNOW")){
-			conn.setRequestMethod("POST");
-			conn.setRequestProperty("X-HTTP-Method-Override", "PATCH");
+			peticion=RecuperadorPeticiones.getInstance().getUpdate();
 		}
 		else if(method.equalsIgnoreCase("GET")){
-			conn.setRequestMethod("GET");
+			peticion=RecuperadorPeticiones.getInstance().getGet();
 		}
 		else if(method.equalsIgnoreCase("DELETE")){
-			conn.setRequestMethod("DELETE");
+			peticion=RecuperadorPeticiones.getInstance().getDelete();
 		}
+		conn.setRequestMethod(peticion.getPeticion());
+		if(peticion.getCabecera()!=null && peticion.getCabecera().length()>0)
+			try{completarCabecera(conn,ConvertidorJson.convertir(peticion.getCabecera()));}	catch (Exception e) {e.printStackTrace();}
+
 		if(contentType!=null)
 			conn.setRequestProperty("Content-Type", contentType);
 		conn.setRequestProperty("charset", "UTF-8");
 		conn.setDoOutput(true);
-		String userPassword = RecuperadorPropiedadedConfiguracionEntidad.getInstance().getUser() + ":" + RecuperadorPropiedadedConfiguracionEntidad.getInstance().getPassword();
+
+/*		String userPassword = RecuperadorPropiedadedConfiguracionEntidad.getInstance().getUser() + ":" + RecuperadorPropiedadedConfiguracionEntidad.getInstance().getPassword();
 		BASE64Encoder encode= new BASE64Encoder();
 		String encoding = encode.encode(userPassword.getBytes());
 		conn.setRequestProperty("Authorization", "Basic " + encoding);	 
-		conn.setRequestProperty("OSvC-CREST-Suppress-All", "true");	 
+		conn.setRequestProperty("OSvC-CREST-Suppress-All", "true");	 */
+		completarCabecera(conn,ConvertidorJson.convertir(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getCabecera()));
 		this.conexion= conn;
 		
+	}
+	
+	private void completarCabecera(HttpURLConnection conn,JSONObject json) throws Exception{
+		for (Object key : json.keySet()) {
+			if(key instanceof String && json.get(key) instanceof String)
+				conn.setRequestProperty((String) key, (String)json.get(key));
+			
+		}
 	}
 
 	public HttpURLConnection getConexion() {

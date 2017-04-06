@@ -1,0 +1,8 @@
+package exit.services.principal.automata;
+
+public class AutomataFinito {
+	
+	public static String leer(String cadena){
+		
+	}
+}
