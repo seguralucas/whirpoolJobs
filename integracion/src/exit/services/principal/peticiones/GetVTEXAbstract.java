@@ -16,15 +16,41 @@ import org.json.simple.JSONObject;
 
 import exit.services.fileHandler.CSVHandler;
 import exit.services.fileHandler.DirectorioManager;
+import exit.services.json.JSONHandler;
 import exit.services.principal.peticiones.funciones.FuncionesVTEX;
 import exit.services.singletons.RecuperadorMapeoCsv;
 import exit.services.singletons.RecuperadorPropiedadedConfiguracionEntidad;
 
-public abstract class GetVTEXAbstract  extends GetAbstractoGenerico{
-	
+public abstract class GetVTEXAbstract  extends AbstractHTTP{
 	
 	@Override
-	Object procesarPeticionOK(BufferedReader in, String id, int responseCode) throws Exception {
+	protected Object procesarPeticionOK(BufferedReader in, JSONHandler json, int responseCode) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Object procesarPeticionError(BufferedReader in, JSONHandler json, int responseCode) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Object procesarPeticionOK(BufferedReader in, JSONHandler json, String id, int responseCode)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Object procesarPeticionError(BufferedReader in, JSONHandler json, String id, int responseCode)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Object procesarPeticionOK(BufferedReader in, String id, int responseCode) throws Exception {
 		FuncionesVTEX fvtex= new FuncionesVTEX();
 		JSONObject jsonObject = ConvertidorJson.convertir(in);
 		String[] buscar=RecuperadorMapeoCsv.getInstancia().getCuerpo().split(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getSeparadorCSVREGEX());
@@ -53,13 +79,13 @@ public abstract class GetVTEXAbstract  extends GetAbstractoGenerico{
 		if(lineaAGuardar.length()!=0)
 			lineaAGuardar=lineaAGuardar.substring(0, lineaAGuardar.length()-1);
 		CSVHandler csv= new CSVHandler();
-		csv.escribirCSV("salida.csv", lineaAGuardar,RecuperadorMapeoCsv.getInstancia().getCabecera(),false);		
+		csv.escribirCSV(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getOutputFile(), lineaAGuardar,RecuperadorMapeoCsv.getInstancia().getCabecera(),false);		
 		return null;
 	}
 
 	@Override
-	Object procesarPeticionError(BufferedReader in, String id, int responseCode) throws Exception {
-		String path=("error_get_orden_responsecode_"+responseCode+".txt");
+	protected Object procesarPeticionError(BufferedReader in, String id, int responseCode) throws Exception {
+		String path=("error_get_lista_"+responseCode+".txt");
 	    File fichero = DirectorioManager.getDirectorioFechaYHoraInicio(path);
 	    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fichero, true)));
         String inputLine;
@@ -71,11 +97,11 @@ public abstract class GetVTEXAbstract  extends GetAbstractoGenerico{
 	}
 
 	@Override
-	Object procesarPeticionOK(BufferedReader in, int responseCode) throws Exception {
+	protected Object procesarPeticionOK(BufferedReader in, int responseCode) throws Exception {
 		JSONArray jsonArrayItems;
 		if(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getIterarSobre()!=null){
-		JSONObject jsonObject = ConvertidorJson.convertir(in);
-		jsonArrayItems= (JSONArray) jsonObject.get(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getIterarSobre());
+			JSONObject jsonObject = ConvertidorJson.convertir(in);
+			jsonArrayItems= (JSONArray) jsonObject.get(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getIterarSobre());
 		}
 		else
 			jsonArrayItems=ConvertidorJson.convertirArray(in);
@@ -104,8 +130,8 @@ public abstract class GetVTEXAbstract  extends GetAbstractoGenerico{
 	abstract Object realizarRequestAbstract(String url, String id);
 	
 	@Override
-	Object procesarPeticionError(BufferedReader in, int responseCode) throws Exception {
-		String path=("error_get_list_orden_responsecode_"+responseCode+".txt");
+	protected Object procesarPeticionError(BufferedReader in, int responseCode) throws Exception {
+		String path=("error_get_lista_"+responseCode+".txt");
 	    File fichero = DirectorioManager.getDirectorioFechaYHoraInicio(path);
 	    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fichero, true)));
         String inputLine;

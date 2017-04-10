@@ -12,7 +12,7 @@ import exit.services.fileHandler.ConstantesGenerales;
 import exit.services.json.JSONHandler;
 import exit.services.singletons.RecuperadorPropiedadedConfiguracionEntidad;
 
-public class PostGenerico extends PostAbstractoEntidades{
+public class PostGenerico extends AbstractHTTP{
 
 	@Override
 	protected Object procesarPeticionOK(BufferedReader in, JSONHandler json, int responseCode) throws Exception {
@@ -49,4 +49,42 @@ public class PostGenerico extends PostAbstractoEntidades{
         out.close();
         return null;
 	 }
+
+	@Override
+	protected Object procesarPeticionOK(BufferedReader in, String id, int responseCode) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Object procesarPeticionError(BufferedReader in, String id, int responseCode) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Object procesarPeticionOK(BufferedReader in, int responseCode) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Object procesarPeticionError(BufferedReader in, int responseCode) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Object procesarPeticionOK(BufferedReader in, JSONHandler json, String id, int responseCode)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Object procesarPeticionError(BufferedReader in, JSONHandler json, String id, int responseCode)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

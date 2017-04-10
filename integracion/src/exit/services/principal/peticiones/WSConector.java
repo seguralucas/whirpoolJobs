@@ -10,8 +10,8 @@ import org.json.simple.JSONObject;
 
 import Decoder.BASE64Encoder;
 import exit.services.singletons.RecuperadorPropiedadedConfiguracionEntidad;
-import exit.services.singletons.peticiones.Peticion;
-import exit.services.singletons.peticiones.RecuperadorPeticiones;
+import exit.services.singletons.entidadesARecuperar.Peticion;
+import exit.services.singletons.entidadesARecuperar.RecuperadorPeticiones;
 
 
 
@@ -20,20 +20,20 @@ public class WSConector {
 	 
 	 private URL url;
 	
-	 public WSConector(String method,String url,String contentType) throws Exception{
+	 public WSConector(EPeticiones httpMethod,String url,String contentType) throws Exception{
 		 	this.url = new URL(url);
-		 	initConecction(method,contentType);
+		 	initConecction(httpMethod,contentType);
 	 }
 	 
-	 public WSConector(String method,String url) throws Exception{
-		 	this(method,url,null);
+	 public WSConector(EPeticiones httpMethod,String url) throws Exception{
+		 	this(httpMethod,url,null);
 	 }
 	 
-	 public WSConector(String method) throws Exception{
-		 	this(method,RecuperadorPropiedadedConfiguracionEntidad.getInstance().getUrl());
+	 public WSConector(EPeticiones httpMethod) throws Exception{
+		 	this(httpMethod,RecuperadorPropiedadedConfiguracionEntidad.getInstance().getUrl());
 	 }
 	
-	private void initConecction(String method, String contentType) throws Exception{
+	private void initConecction(EPeticiones httpMethod, String contentType) throws Exception{
 		HttpURLConnection conn=null;
 		if(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getUsaProxy().equalsIgnoreCase("SI")){
 			Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getIpProxy(), Integer.parseInt(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getPuertoProxy())));
@@ -42,16 +42,16 @@ public class WSConector {
 		else
 			conn = (HttpURLConnection) url.openConnection();
 		Peticion peticion = null;
-		if(method.equalsIgnoreCase("POST")){
+		if(httpMethod == EPeticiones.POST){
 			peticion=RecuperadorPeticiones.getInstance().getPost();
 		}
-		else if(method.equalsIgnoreCase("UPDATERIGHTNOW")){
+		else if(httpMethod == EPeticiones.UPDATE){
 			peticion=RecuperadorPeticiones.getInstance().getUpdate();
 		}
-		else if(method.equalsIgnoreCase("GET")){
+		else if(httpMethod == EPeticiones.GET){
 			peticion=RecuperadorPeticiones.getInstance().getGet();
 		}
-		else if(method.equalsIgnoreCase("DELETE")){
+		else if(httpMethod == EPeticiones.DELETE){
 			peticion=RecuperadorPeticiones.getInstance().getDelete();
 		}
 		conn.setRequestMethod(peticion.getPeticion());

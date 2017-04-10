@@ -3,22 +3,14 @@ package exit.services.principal;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.lang.management.ManagementFactory;
-import java.nio.file.Path;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.lang.reflect.Method;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.ParseException;
-
+import exit.services.fileHandler.CSVHandler;
 import exit.services.fileHandler.DirectorioManager;
 import exit.services.principal.ejecutores.ParalelizadorDistintosFicheros;
 import exit.services.singletons.ApuntadorDeEntidad;
-import exit.services.singletons.RecuperadorFormato;
+import exit.services.singletons.EOutputs;
 import exit.services.singletons.RecuperadorMapeoCsv;
 import exit.services.singletons.RecuperadorPropiedadedConfiguracionEntidad;
 
@@ -76,15 +68,22 @@ public class Principal {
 		try{
 			Integer cantRegistros=-1;
 			RecuperadorMapeoCsv.getInstancia();
-			if(RecuperadorPropiedadedConfiguracionEntidad.getInstance().isPaginado()){
+			RecuperadorPropiedadedConfiguracionEntidad r= RecuperadorPropiedadedConfiguracionEntidad.getInstance();
+			if(r.isPaginado()){
 				while(cantRegistros!=0){
-					cantRegistros=(Integer)e.ejecutar(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getMetodoEjecutor(),RecuperadorPropiedadedConfiguracionEntidad.getInstance().getParametroEjecutor());
-					RecuperadorPropiedadedConfiguracionEntidad.getInstance().incresePaginaActual();
-					System.out.println("Pagina actual: "+RecuperadorPropiedadedConfiguracionEntidad.getInstance().getPaginaActual());
+					try{
+					cantRegistros=(Integer)e.ejecutar(r.getMetodoEjecutor(),r.getParametroEjecutor());
+					r.incresePaginaActual();
+					System.out.println("Pagina actual: "+r.getPaginaActual());					
+					}catch(Exception ex){CSVHandler csv= new CSVHandler(); csv.escribirErrorException("Error en entidad: "+ApuntadorDeEntidad.getInstance().getEntidadActual(), ex.getStackTrace(),true);}
 				}
 			}
 			else{
-				cantRegistros=(Integer)e.ejecutar(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getMetodoEjecutor(),RecuperadorPropiedadedConfiguracionEntidad.getInstance().getParametroEjecutor());
+				cantRegistros=(Integer)e.ejecutar(r.getMetodoEjecutor(),RecuperadorPropiedadedConfiguracionEntidad.getInstance().getParametroEjecutor());
+			}
+			if(r.getOutput()==EOutputs.SFTP){
+				SFTP sftp= new SFTP(r.getSftpPropiedades());
+				sftp.transferirFichero(DirectorioManager.getDirectorioFechaYHoraInicio(r.getOutputFile()).getPath(), r.getOutPutPath()+"/"+r.getOutputFile());
 			}
 			System.out.println("Fin");
 		}

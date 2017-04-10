@@ -8,9 +8,12 @@ import java.io.PrintWriter;
 
 import exit.services.fileHandler.CSVHandler;
 import exit.services.fileHandler.DirectorioManager;
+import exit.services.json.JSONHandler;
 import exit.services.fileHandler.ConstantesGenerales;
 
-public class EliminarGenerico extends EliminarAbstractoEntidad {
+public class EliminarGenerico extends AbstractHTTP {
+	
+	
 	
 	@Override
 	protected Object procesarPeticionOK(BufferedReader in, String id,int responseCode) throws Exception{
@@ -37,5 +40,43 @@ public class EliminarGenerico extends EliminarAbstractoEntidad {
         out.close();
         return null;
 	 }
+
+	@Override
+	protected Object procesarPeticionOK(BufferedReader in, int responseCode) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Object procesarPeticionError(BufferedReader in, int responseCode) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Object procesarPeticionOK(BufferedReader in, JSONHandler json, String id, int responseCode)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Object procesarPeticionError(BufferedReader in, JSONHandler json, String id, int responseCode)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Object procesarPeticionOK(BufferedReader in, JSONHandler json, int responseCode) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Object procesarPeticionError(BufferedReader in, JSONHandler json, int responseCode) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

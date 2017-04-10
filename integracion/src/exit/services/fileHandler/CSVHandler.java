@@ -14,7 +14,6 @@ public class CSVHandler {
 	
 	public static String cabeceraFichero;
 	public static final String PATH_ERROR_SERVER_NO_ALCANZADO="servidor_no_alcanzado.csv";
-	public static final String PATH_ERROR_SERVER_NO_ALCANZADO_BORRADO="servidor_no_alcanzado_borrado.csv";
 	public static final String PATH_SAC_EXISTENTE="sac_existente_services.csv";
 	public static final String LOG_ERROR_FETCH_TIPO_INCIDENTE="error_fetch_tipo_incidente.txt";
 	public static final String PATH_ERROR_EXCEPTION="exception_ejecucion.csv";

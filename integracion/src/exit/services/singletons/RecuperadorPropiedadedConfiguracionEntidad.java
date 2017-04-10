@@ -9,6 +9,8 @@ import java.util.Properties;
 import exit.services.fileHandler.CSVHandler;
 import exit.services.fileHandler.ConstantesGenerales;
 import exit.services.fileHandler.DirectorioManager;
+import exit.services.principal.peticiones.EPeticiones;
+import exit.services.singletons.entidadesARecuperar.SFTPPropiedades;
 
 public class RecuperadorPropiedadedConfiguracionEntidad {
 	HashMap<String, String> mapPropiedades;
@@ -16,6 +18,9 @@ public class RecuperadorPropiedadedConfiguracionEntidad {
 	private static RecuperadorPropiedadedConfiguracionEntidad instance;
 	public static final String ACCION_CSVASERVICIO="CSVASERVICIO";
 	public static final String ACCION_SERVICIOAACSV="SERVICIOAACSV";
+	public static final String OUTPUT_FILE_DEFAULT="salida.csv";
+	public static final String OUTPUT_PATH_DEFAULT=".";
+	private SFTPPropiedades sftpPropiedades=null;
     private RecuperadorPropiedadedConfiguracionEntidad(){
     	paginaActual=1;
     	mapPropiedades=new HashMap<String,String>();
@@ -70,6 +75,22 @@ public class RecuperadorPropiedadedConfiguracionEntidad {
 
 	public String getUrl() {
 		return getValueMap("url");
+	}
+	
+	public String getSalida(){
+		return getValueMap("salida");
+	}
+
+	public String getUser(){
+		return getValueMap("user");
+	}
+
+	public String getPuerto(){
+		return getValueMap("puerto");
+	}
+
+	public String getKeyFile(){
+		return getValueMap("keyFile");
 	}
 
 	public String getMetodoPreEjecutor() {
@@ -153,6 +174,26 @@ public class RecuperadorPropiedadedConfiguracionEntidad {
 		return getValueMap("identificadorAtributo");
 	}
 	
+	public SFTPPropiedades getSftpPropiedades(){
+		if(sftpPropiedades!=null)
+			return sftpPropiedades;
+		this.sftpPropiedades=new SFTPPropiedades(getValueMap("host"),getValueMap("user"), Integer.parseInt(getValueMap("puerto")), getValueMap("keyFile"));
+		return sftpPropiedades;
+	}
+	
+	public EOutputs getOutput(){
+		String output=getValueMap("output");
+		if(output==null)
+			return EOutputs.DIRECTORIO;
+		switch(output.toUpperCase()){
+		case "SFTP": return EOutputs.SFTP;
+		default: return EOutputs.DIRECTORIO;
+		}
+	}
+	
+	public String getOutPutPath(){
+		return getValueMap("outputPath")==null?OUTPUT_PATH_DEFAULT:getValueMap("outputPath");
+	}
 	
 	public String getFiltros(){
 			return getValueMap("filtros");
@@ -161,6 +202,11 @@ public class RecuperadorPropiedadedConfiguracionEntidad {
 	public int getPaginaActual() {
 		return paginaActual;
 	}	
+	
+	public String getOutputFile() {
+		return getValueMap("outputFile")==null?OUTPUT_FILE_DEFAULT:getValueMap("outputFile");
+	}	
+	
 	public void incresePaginaActual() {
 		paginaActual++;
 	}
@@ -168,6 +214,8 @@ public class RecuperadorPropiedadedConfiguracionEntidad {
 	public void setPaginaActual(int paginaActual) {
 		this.paginaActual = paginaActual;
 	}
+	
+
 	
 
 	public boolean isBorrarDataSetAlFinalizar() {

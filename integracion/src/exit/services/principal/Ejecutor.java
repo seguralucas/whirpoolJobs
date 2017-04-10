@@ -3,7 +3,6 @@ package exit.services.principal;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -12,13 +11,11 @@ import exit.services.excepciones.ExceptionBiactiva;
 import exit.services.fileHandler.CSVHandler;
 import exit.services.json.AbstractJsonRestEstructura;
 import exit.services.json.JSONHandler;
-import exit.services.json.JsonGenerico;
-import exit.services.principal.peticiones.GetAbstractoGenerico;
+import exit.services.principal.peticiones.AbstractHTTP;
+import exit.services.principal.peticiones.EPeticiones;
 import exit.services.principal.peticiones.GetExistFieldURLQueryRightNow;
 import exit.services.principal.peticiones.GetVTEXOMS;
-import exit.services.principal.peticiones.GetVTEXAbstract;
 import exit.services.principal.peticiones.GetVTEXMasterData;
-import exit.services.principal.peticiones.PostAbstractoEntidades;
 import exit.services.principal.peticiones.PostGenerico;
 import exit.services.principal.peticiones.UpdateGenericoRightNow;
 import exit.services.singletons.ApuntadorDeEntidad;
@@ -50,19 +47,19 @@ public class Ejecutor {
 		   }
 		}
 		GetExistFieldURLQueryRightNow get= new GetExistFieldURLQueryRightNow();
-		String id=(String)get.realizarPeticion(parametros);
+		String id=(String)get.realizarPeticion(EPeticiones.GET, parametros);
 		if(id!=null){
 			UpdateGenericoRightNow update= new UpdateGenericoRightNow();
-			update.realizarPeticion(id, jsonH);
+			update.realizarPeticion(EPeticiones.UPDATE, id, jsonH);
 		}
 		else{
 			PostGenerico insertar= new PostGenerico();
-			insertar.realizarPeticion(jsonH);
+			insertar.realizarPeticion(EPeticiones.POST, jsonH);
 		}
 		}
 		catch(Exception e){
 			PostGenerico insertar= new PostGenerico();
-			insertar.realizarPeticion(jsonH);			
+			insertar.realizarPeticion(EPeticiones.POST,jsonH);			
 		}
 	}
 	
@@ -71,8 +68,8 @@ public class Ejecutor {
 			try{
 				jsonH=jsonEst.createJson();
 				System.out.println(jsonH.toStringNormal());
-				PostAbstractoEntidades insertar= new PostGenerico();
-				insertar.realizarPeticion(jsonH);
+				AbstractHTTP insertar= new PostGenerico();
+				insertar.realizarPeticion(EPeticiones.POST,jsonH);
 			}
 			catch(Exception e){
 				escribirExcepcion(e,jsonEst);
@@ -100,12 +97,12 @@ public class Ejecutor {
 		c.add(Calendar.DATE, -1*cantDias);
 		d.setTime( c.getTime().getTime() );
 		String desde=sdf.format(d);
-		return "_where=createdIn  between "+desde+" AND "+hasta;		    
+		return "_where=createdIn%20between%20"+desde+"%20AND%20"+hasta;		    
 	}
 
 	
 	public Object ejecutorServicioACsvVTEXOMS(String cantidadDias) throws UnsupportedEncodingException{
-		GetVTEXAbstract getVTEXGenerico= new GetVTEXOMS();
+		AbstractHTTP getVTEXGenerico= new GetVTEXOMS();
 		String identificadorAtr=RecuperadorPropiedadedConfiguracionEntidad.getInstance().getIdentificadorAtributo();
 		String cabeceraUrl=RecuperadorPropiedadedConfiguracionEntidad.getInstance().getFiltros().replaceAll(identificadorAtr+"NRO_PAG"+identificadorAtr, String.valueOf(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getPaginaActual()));
 		Integer cantDias=Integer.parseInt(cantidadDias);
@@ -117,11 +114,11 @@ public class Ejecutor {
 			parametrosFianl=cabeceraUrl+"&"+parametroDate;
 	
 		System.out.println(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getUrl()+"?"+parametrosFianl);		
-		return getVTEXGenerico.realizarPeticion(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getUrl()+"?"+parametrosFianl);
+		return getVTEXGenerico.realizarPeticion(EPeticiones.GET,RecuperadorPropiedadedConfiguracionEntidad.getInstance().getUrl()+"?"+parametrosFianl);
 	}
 	
 	public Object ejecutorServicioACsvVTEXMasterData(String cantidadDias) throws UnsupportedEncodingException{
-		GetAbstractoGenerico getGenerico= new GetVTEXMasterData();
+		AbstractHTTP getGenerico= new GetVTEXMasterData();
 		String identificadorAtr=RecuperadorPropiedadedConfiguracionEntidad.getInstance().getIdentificadorAtributo();
 		String cabeceraUrl=RecuperadorPropiedadedConfiguracionEntidad.getInstance().getFiltros().replaceAll(identificadorAtr+"NRO_PAG"+identificadorAtr, String.valueOf(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getPaginaActual()));
 		Integer cantDias=Integer.parseInt(cantidadDias);
@@ -133,9 +130,8 @@ public class Ejecutor {
 			parametrosFianl=cabeceraUrl+"&"+parametroDate;
 	
 		System.out.println(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getUrl()+"/search?"+parametrosFianl);		
-		return getGenerico.realizarPeticion(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getUrl()+"/search?"+parametrosFianl);
+		return getGenerico.realizarPeticion(EPeticiones.GET,RecuperadorPropiedadedConfiguracionEntidad.getInstance().getUrl()+"/search?"+parametrosFianl);
 	}
-	
 	
 	
 	

@@ -1,0 +1,82 @@
+package exit.services.principal;
+
+import java.io.File;
+
+import com.jcraft.jsch.Channel;
+import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.Session;
+import com.jcraft.jsch.SftpException;
+import com.jcraft.jsch.UserInfo;
+
+import exit.services.singletons.entidadesARecuperar.SFTPPropiedades;
+
+public class SFTP {
+	
+	private SFTPPropiedades sftpPropiedades;
+	
+	
+	public SFTP(SFTPPropiedades sftpPropiedades) {
+		this.sftpPropiedades=sftpPropiedades;
+	}
+
+
+public static void main(String[] args) {
+    try {
+    JSch jsch = new JSch();
+    String user = "compracierta_scp";
+    String host = "files.dc2.responsys.net";
+    int port = 22;
+    String privateKey = "./Configuracion/server.pem";
+
+    jsch.addIdentity(privateKey);
+    System.out.println("identity added ");
+
+    Session session = jsch.getSession(user, host, port);
+    System.out.println("session created.");
+    java.util.Properties config = new java.util.Properties(); 
+    config.put("StrictHostKeyChecking", "no");
+    session.setConfig(config);
+
+    // disabling StrictHostKeyChecking may help to make connection but makes it insecure
+    // see http://stackoverflow.com/questions/30178936/jsch-sftp-security-with-session-setconfigstricthostkeychecking-no
+    // 
+    // java.util.Properties config = new java.util.Properties();
+    // config.put("StrictHostKeyChecking", "no");
+    // session.setConfig(config);
+
+    session.connect();
+    System.out.println("session connected.....");
+
+    Channel channel = session.openChannel("sftp");
+    channel.setInputStream(System.in);
+    channel.setOutputStream(System.out);
+    channel.connect();
+    System.out.println("shell channel connected....");
+
+    ChannelSftp c = (ChannelSftp) channel;
+
+    String fileName = "Configuracion/whirlpool-public.ppk";
+    c.put(fileName, "/home/cli/compracierta_scp/tt2.txt");
+    c.exit();
+    session.disconnect();
+    System.out.println("done");
+
+	} catch (Exception e) {
+	    System.err.println(e);
+	}
+	}
+
+
+public SFTPPropiedades getSftpPropiedades() {
+	return sftpPropiedades;
+}
+
+
+
+public void setSftpPropiedades(SFTPPropiedades sftpPropiedades) {
+	this.sftpPropiedades = sftpPropiedades;
+}
+
+}

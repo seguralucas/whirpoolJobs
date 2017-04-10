@@ -1,40 +1,43 @@
 {
-"LATITUD":{
+"_ Latitud":{
 "tipo":"cadena"
 },
-"LONGITUD":{
+"_ Longitud":{
 "tipo":"cadena"
 },
-"MARCA":{
+"_ Marca":{
 "tipo":"cadena"
 },
-"MARCA_APERNET_ID":{
+"Marca_cod_origen ID":{
 "tipo":"entero",
 "borrarCarNoNumericos":true
 },
-"RUBRO":{
+"- Categoria":{
 "tipo":"cadena"
 },
-"SUB_RUBRO":{
+"_ Subcategoria":{
 "tipo":"cadena"
 },
-"SUCURSAL":{
+"_ Sucursal":{
 "tipo":"cadena"
 },
-"SUCURSAL_APERNET_ID":{
+"_ Partido":{
+"tipo":"cadena"
+},
+"Cod_Origen_Suc ID":{
 "tipo":"entero",
 "borrarCarNoNumericos":true
 },
-"CALLE":{
+"_ Calle":{
 "tipo":"cadena"
 },
-"LOCALIDAD":{
+"_ Localidad":{
 "tipo":"cadena"
 },
-"NRO":{
+"_ Nro":{
 "tipo":"cadena"
 },
-"LOCALIDAD_ZONA":{
+"_ Zona":{
 "tipo":"cadena"
 }
 }

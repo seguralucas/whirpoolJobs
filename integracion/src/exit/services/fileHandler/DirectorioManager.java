@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 
 import exit.services.singletons.AlmacenadorFechaYHora;
 import exit.services.singletons.ApuntadorDeEntidad;
+import exit.services.singletons.EOutputs;
 import exit.services.singletons.RecuperadorPropiedadedConfiguracionEntidad;
 
 public class DirectorioManager {
@@ -48,7 +49,10 @@ public class DirectorioManager {
 	
 
 	private static String getEntidadFecha(){
-		return ApuntadorDeEntidad.getInstance().getEntidadActual()+"/"+AlmacenadorFechaYHora.getFechaYHoraInicio();
+		String outputPath=RecuperadorPropiedadedConfiguracionEntidad.getInstance().getOutPutPath();
+		if(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getOutput()!=EOutputs.DIRECTORIO)
+			outputPath=RecuperadorPropiedadedConfiguracionEntidad.OUTPUT_PATH_DEFAULT;
+		return outputPath+"/"+ApuntadorDeEntidad.getInstance().getEntidadActual()+"/"+AlmacenadorFechaYHora.getFechaYHoraInicio();
 	}
 	public static File getDirectorioFechaYHoraInicio(String nombreFichero) throws IOException{
 		File file = new File(getEntidadFecha());

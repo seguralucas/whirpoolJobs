@@ -17,11 +17,12 @@ import org.json.simple.parser.JSONParser;
 
 import exit.services.fileHandler.CSVHandler;
 import exit.services.fileHandler.DirectorioManager;
+import exit.services.json.JSONHandler;
 import exit.services.fileHandler.ConstantesGenerales;
 import exit.services.singletons.ApuntadorDeEntidad;
 import exit.services.singletons.RecuperadorPropiedadedConfiguracionEntidad;
 
-public class GetIdsAEliminar extends GetAbstractoGenerico{
+public class GetIdsAEliminar extends AbstractHTTP{
 
 	@Override
 	protected Object procesarPeticionOK(BufferedReader in, String id, int responseCode) throws Exception {
@@ -50,7 +51,7 @@ public class GetIdsAEliminar extends GetAbstractoGenerico{
     		JSONObject jsonItem;
 			jsonItem=(JSONObject)jsonArrayItems.get(j);
 			Long id=(Long)jsonItem.get("id");
-			e.realizarPeticion(String.valueOf(id));
+			e.realizarPeticion(EPeticiones.DELETE, String.valueOf(id));
 			return null;
 		        }
 			});
@@ -76,6 +77,32 @@ public class GetIdsAEliminar extends GetAbstractoGenerico{
         out.println(ConstantesGenerales.SEPARADOR_ERROR_PETICION);
         out.close();	
         return null;
+	}
+
+	@Override
+	protected Object procesarPeticionOK(BufferedReader in, JSONHandler json, int responseCode) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Object procesarPeticionError(BufferedReader in, JSONHandler json, int responseCode) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Object procesarPeticionOK(BufferedReader in, JSONHandler json, String id, int responseCode)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Object procesarPeticionError(BufferedReader in, JSONHandler json, String id, int responseCode)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 

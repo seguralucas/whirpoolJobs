@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="dependencias/json-simple-1.1.1-sources.jar"/>
 	<classpathentry kind="lib" path="dependencias/sun.misc.BASE64Decoder.jar"/>
 	<classpathentry kind="lib" path="dependencias/w3c-dom.jar"/>
+	<classpathentry kind="lib" path="dependencias/com.jcraft.jsch_0.1.31.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -26,7 +26,7 @@ public class GetVTEXMasterData extends GetVTEXAbstract{
 
 	@Override
 	Object realizarRequestAbstract(String url, String id) {
-		return this.realizarPeticion(url+"/documents", id+"?_fields=_all");
+		return this.realizarPeticion(EPeticiones.GET, url+"/documents", id+"?_fields=_all");
 	}
 
 	

@@ -1,0 +1,9 @@
+package exit.services.principal.peticiones;
+
+import exit.services.json.JSONHandler;
+
+public interface IPeticionesConId {
+	public Object realizarPeticion(EPeticiones httpMetodo);		
+	public  Object realizarPeticion(EPeticiones httpMetodo, String url, JSONHandler json);	 
+	public  Object realizarPeticion(EPeticiones httpMetodo, String url,String id);
+}

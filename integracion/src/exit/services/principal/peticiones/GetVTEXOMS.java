@@ -27,7 +27,7 @@ public class GetVTEXOMS extends GetVTEXAbstract{
 
 	@Override
 	Object realizarRequestAbstract(String url, String id) {
-		return this.realizarPeticion(url, id);
+		return this.realizarPeticion(EPeticiones.GET,url, id);
 	}
 
 

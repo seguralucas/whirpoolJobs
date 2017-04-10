@@ -10,23 +10,24 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import exit.services.fileHandler.DirectorioManager;
+import exit.services.json.JSONHandler;
 
-public class GetExistFieldURLQueryRightNow extends GetAbstractoGenerico{
+public class GetExistFieldURLQueryRightNow extends AbstractHTTP{
 
 	@Override
-	Object procesarPeticionOK(BufferedReader in, String id, int responseCode) throws Exception {
+	protected Object procesarPeticionOK(BufferedReader in, String id, int responseCode) throws Exception {
 		// No utilizado
 		return null;
 	}
 
 	@Override
-	Object procesarPeticionError(BufferedReader in, String id, int responseCode) throws Exception {
+	protected Object procesarPeticionError(BufferedReader in, String id, int responseCode) throws Exception {
 		// No utilizado
 		return null;
 	}
 
 	@Override
-	Object procesarPeticionOK(BufferedReader in, int responseCode) throws Exception {
+	protected Object procesarPeticionOK(BufferedReader in, int responseCode) throws Exception {
 		JSONObject jsonObject = ConvertidorJson.convertir(in);
 		JSONArray jsonArrayItems= (JSONArray) jsonObject.get("items");
 		JSONObject jsonCuerpo=(JSONObject) jsonArrayItems.get(0);
@@ -37,7 +38,7 @@ public class GetExistFieldURLQueryRightNow extends GetAbstractoGenerico{
 	}
 
 	@Override
-	Object procesarPeticionError(BufferedReader in, int responseCode) throws Exception {
+	protected Object procesarPeticionError(BufferedReader in, int responseCode) throws Exception {
 		String path=("error_ger_verificarExistencia"+responseCode+".txt");
 	    File fichero = DirectorioManager.getDirectorioFechaYHoraInicio(path);
 	    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fichero, true)));
@@ -47,6 +48,32 @@ public class GetExistFieldURLQueryRightNow extends GetAbstractoGenerico{
         }
         out.close();
         return null;
+	}
+
+	@Override
+	protected Object procesarPeticionOK(BufferedReader in, JSONHandler json, int responseCode) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Object procesarPeticionError(BufferedReader in, JSONHandler json, int responseCode) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Object procesarPeticionOK(BufferedReader in, JSONHandler json, String id, int responseCode)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Object procesarPeticionError(BufferedReader in, JSONHandler json, String id, int responseCode)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
