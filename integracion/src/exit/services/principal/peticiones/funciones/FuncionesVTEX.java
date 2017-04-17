@@ -4,9 +4,12 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import exit.services.singletons.RecuperadorEspecificacionesCSV;
-import exit.services.singletos.funciones.FuncionesWhirpool;
 
 public class FuncionesVTEX {
+	private static final String SPLITEAR_ORDEN="splitearOrden";
+	private static final String PROCESAR_FECHA_VTEX="procesarFechaVTEX";
+	
+	
 	public String[] getArrayTipos(String accesoAlJson){
 		String datos[]=accesoAlJson.split("\\.");
 		String[] tipoDatos= new String[datos.length];
@@ -67,13 +70,18 @@ public class FuncionesVTEX {
 		for(int j=0;j<jsonArr.size();j++){
 			JSONObject json= (JSONObject)jsonArr.get(j);
 			String name= (String)json.get("name");
-				if(name.equalsIgnoreCase("splitearOrden")){
+				if(name.equalsIgnoreCase(SPLITEAR_ORDEN)){
 					FuncionesWhirpool f= new FuncionesWhirpool();
 					salida=f.splitearOrden(salida);
-					System.out.println(salida);
+				}
+				else if(name.equalsIgnoreCase(PROCESAR_FECHA_VTEX)){
+					FuncionesWhirpool f= new FuncionesWhirpool();
+					salida=f.procesarFechaVTEX(salida);
 				}
 		}
 		return salida;
 	}
+	
+
 	
 }

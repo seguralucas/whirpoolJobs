@@ -1,0 +1,21 @@
+package exit.services.principal;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+public class Test {
+
+	public static void main(String[] args) {
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+		String hasta = sdf.format(new Date());
+		Date d= new Date();
+		Calendar c = Calendar.getInstance();
+		c.setTime(d);
+		c.add(Calendar.DATE, -1*cantDias);
+		d.setTime( c.getTime().getTime() );
+		String desde=sdf.format(d);
+
+	}
+
+}

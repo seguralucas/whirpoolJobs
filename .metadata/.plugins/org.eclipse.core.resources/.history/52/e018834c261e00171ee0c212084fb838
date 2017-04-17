@@ -1,0 +1,16 @@
+package exit.services.principal;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
+
+public class Test {
+
+	public static void main(String[] args) {
+		LocalDateTime ldt= LocalDateTime.now();
+		System.out.println(		ldt.getYear()+"/"+ldt.getMonth()+"/"+ldt.getDayOfMonth()+"_"+ldt.getHour()+":"+ldt.getMinute()+":"+ldt.getSecond() );
+		
+	}
+
+}

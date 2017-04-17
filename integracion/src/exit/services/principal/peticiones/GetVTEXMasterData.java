@@ -17,10 +17,10 @@ import org.json.simple.JSONObject;
 import exit.services.fileHandler.CSVHandler;
 import exit.services.fileHandler.DirectorioManager;
 import exit.services.principal.peticiones.funciones.FuncionesVTEX;
+import exit.services.principal.peticiones.funciones.FuncionesWhirpool;
 import exit.services.singletons.RecuperadorEspecificacionesCSV;
 import exit.services.singletons.RecuperadorMapeoCsv;
 import exit.services.singletons.RecuperadorPropiedadedConfiguracionEntidad;
-import exit.services.singletos.funciones.FuncionesWhirpool;
 
 public class GetVTEXMasterData extends GetVTEXAbstract{
 

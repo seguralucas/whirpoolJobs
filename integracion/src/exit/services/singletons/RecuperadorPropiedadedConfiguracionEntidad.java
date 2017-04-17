@@ -3,6 +3,7 @@ package exit.services.singletons;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -20,6 +21,7 @@ public class RecuperadorPropiedadedConfiguracionEntidad {
 	public static final String ACCION_SERVICIOAACSV="SERVICIOAACSV";
 	public static final String OUTPUT_FILE_DEFAULT="salida.csv";
 	public static final String OUTPUT_PATH_DEFAULT=".";
+	private String outPut;
 	private SFTPPropiedades sftpPropiedades=null;
     private RecuperadorPropiedadedConfiguracionEntidad(){
     	paginaActual=1;
@@ -203,8 +205,25 @@ public class RecuperadorPropiedadedConfiguracionEntidad {
 		return paginaActual;
 	}	
 	
+	private String completarFechaConCeroAIzquierda(String value){
+		return value.length()<2?"0"+value:value;
+	}
+	
 	public String getOutputFile() {
-		return getValueMap("outputFile")==null?OUTPUT_FILE_DEFAULT:getValueMap("outputFile");
+		if(getValueMap("outputFile")==null)
+			return OUTPUT_FILE_DEFAULT;
+		if(outPut!=null && outPut.length()>0)
+			return outPut;
+		LocalDateTime ldt= LocalDateTime.now();
+		outPut=getValueMap("outputFile");
+		outPut=outPut.replaceAll("YY",completarFechaConCeroAIzquierda(String.valueOf(ldt.getYear())));
+		outPut=outPut.replaceAll("MM",completarFechaConCeroAIzquierda(String.valueOf(ldt.getMonthValue())));
+		outPut=outPut.replaceAll("DD",completarFechaConCeroAIzquierda(String.valueOf(ldt.getDayOfMonth())));
+		outPut=outPut.replaceAll("HH",completarFechaConCeroAIzquierda(String.valueOf(ldt.getHour())));
+		outPut=outPut.replaceAll("MI",completarFechaConCeroAIzquierda(String.valueOf(ldt.getMinute())));
+		outPut=outPut.replaceAll("SS",completarFechaConCeroAIzquierda(String.valueOf(ldt.getMinute())));
+		return outPut;
+
 	}	
 	
 	public void incresePaginaActual() {

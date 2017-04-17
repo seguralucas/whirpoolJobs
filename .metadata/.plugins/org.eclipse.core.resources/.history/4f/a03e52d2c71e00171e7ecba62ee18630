@@ -1,0 +1,16 @@
+{
+	"orderId":{ 
+		"functions":[ 
+			{
+				"name":"splitearOrden" 
+			}
+		]
+	},
+	"PURCHASE_DATE":{
+		"functions":[ 
+			{
+				"name":"procesarFechaOMS" 
+			}
+		]
+	}
+}

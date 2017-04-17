@@ -1,0 +1,23 @@
+package exit.services.principal;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
+
+public class Test {
+
+	public static void main(String[] args) throws ParseException {
+		
+		//2017-03-13 14:06:58
+		String fecha="2017-03-15T00:19:28.438492Z";
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+		//Date date=sdf.parse(fecha);
+		
+		System.out.println(sdf.setTimeZone(TimeZone.getTimeZone("GMT")););
+		
+	}
+
+}

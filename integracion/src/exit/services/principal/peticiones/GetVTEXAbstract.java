@@ -115,7 +115,6 @@ public abstract class GetVTEXAbstract  extends AbstractHTTP{
 		        public Void call() {
     		JSONObject jsonItem=(JSONObject)jsonArrayItems.get(j);
 			String id=(String)jsonItem.get(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getIdIteracion());
-			System.out.println(id);
 			getVTEXAbstract.realizarRequestAbstract(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getUrl(), id);
 			return null;
 		        }

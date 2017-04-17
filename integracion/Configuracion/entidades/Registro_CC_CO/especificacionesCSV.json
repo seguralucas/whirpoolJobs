@@ -5,5 +5,12 @@
 				"name":"splitearOrden" 
 			}
 		]
+	},
+	"REGISTRO":{
+		"functions":[ 
+			{
+				"name":"procesarFechaVTEX" 
+			}
+		]
 	}
 }
