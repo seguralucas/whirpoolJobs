@@ -1,8 +1,0 @@
-FileName: ChannelSftp.java Metodo: throwStatusErrorClase com.jcraft.jsch.ChannelSftp Linea 2108
-FileName: ChannelSftp.java Metodo: _putClase com.jcraft.jsch.ChannelSftp Linea 505
-FileName: ChannelSftp.java Metodo: putClase com.jcraft.jsch.ChannelSftp Linea 412
-FileName: ChannelSftp.java Metodo: putClase com.jcraft.jsch.ChannelSftp Linea 319
-FileName: SFTP.java Metodo: transferirFicheroClase exit.services.principal.SFTP Linea 41
-FileName: Principal.java Metodo: servicioACsvClase exit.services.principal.Principal Linea 86
-FileName: Principal.java Metodo: mainClase exit.services.principal.Principal Linea 33
----------------------------------------------------------------------

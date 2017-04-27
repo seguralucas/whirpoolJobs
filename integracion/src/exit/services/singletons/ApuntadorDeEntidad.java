@@ -27,6 +27,7 @@ public class ApuntadorDeEntidad {
     }
     
     public boolean siguienteEntidad(){
+    	try{
     	if((puntero+1)>=entidades.length)
     		return false;
     	puntero++;
@@ -45,4 +46,9 @@ public class ApuntadorDeEntidad {
     	return true;
     	
     }
+    	catch(Exception e){
+    		e.printStackTrace();
+    		return false;
+    	}
+    	}
 }

@@ -1,5 +1,0 @@
-package exit.services.singletons.peticiones;
-
-public class Peticion {
-
-}

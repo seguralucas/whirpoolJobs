@@ -1,9 +1,0 @@
-package exit.services.singletons.entidadesARecuperar;
-
-public class SFTPPropiedades {
-			private String user;
-			private Integer puerto;
-			private String keyFile;
-			private String output;
-			
-}

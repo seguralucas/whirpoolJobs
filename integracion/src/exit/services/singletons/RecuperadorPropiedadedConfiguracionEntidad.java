@@ -74,6 +74,10 @@ public class RecuperadorPropiedadedConfiguracionEntidad {
 		return getValueMap("pathCSVRegistros");
 		
 	}
+	
+	public boolean isCreateEmptyFile(){
+		return getValueMap("createEmptyFile")==null?false:getValueMap("createEmptyFile").equalsIgnoreCase("true");
+	}
 
 	public String getUrl() {
 		return getValueMap("url");
@@ -194,7 +198,7 @@ public class RecuperadorPropiedadedConfiguracionEntidad {
 	}
 	
 	public String getOutPutPath(){
-		return getValueMap("outputPath")==null?OUTPUT_PATH_DEFAULT:getValueMap("outputPath");
+		return getValueMap("outputPath")==null?ConstantesGenerales.PATH_EJECUCION:getValueMap("outputPath");
 	}
 	
 	public String getFiltros(){

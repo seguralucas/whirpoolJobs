@@ -1,5 +1,6 @@
 package exit.services.singletons;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -22,7 +23,7 @@ public class RecuperadorPropiedadesConfiguracionGenerales {
         }
         catch(Exception e){
         	e.printStackTrace();
-        	try(FileWriter fw= new FileWriter(DirectorioManager.getDirectorioFechaYHoraInicio("error.txt"))) {
+        	try(FileWriter fw= new FileWriter(new File("ErrorTemprano.txt"))) {
         		e.printStackTrace();
 				fw.write("Error al recuperar las propierdades del fichero: ConfiguracionGeneral.properties");
 			} catch (IOException e1) {

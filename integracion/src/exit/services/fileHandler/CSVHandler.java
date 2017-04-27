@@ -14,8 +14,6 @@ public class CSVHandler {
 	
 	public static String cabeceraFichero;
 	public static final String PATH_ERROR_SERVER_NO_ALCANZADO="servidor_no_alcanzado.csv";
-	public static final String PATH_SAC_EXISTENTE="sac_existente_services.csv";
-	public static final String LOG_ERROR_FETCH_TIPO_INCIDENTE="error_fetch_tipo_incidente.txt";
 	public static final String PATH_ERROR_EXCEPTION="exception_ejecucion.csv";
 	public static final String PATH_ERROR_VALIADACION_DATOS_CSV="error_validacion_datos.csv";
 	public static final String PATH_ERROR_VALIADACION_DATOS_TXT="error_validacion_datos.txt";
@@ -25,9 +23,10 @@ public class CSVHandler {
 	public static final String PATH_INSERTADOS_OK="insertadosOK.csv";
 	public static final String PATH_UPDATES_OK="actualizadosOK.csv";
 	public static final String PATH_BORRADOS_OK="borradosOK.csv";
+	public static final String PATH_LOG_GENERICO="log.txt";
 	
 
-		private static synchronized void crearCabecer(File file,String cabecera)  throws IOException{
+		public static synchronized void crearCabecer(File file,String cabecera)  throws IOException{
             if(!file.exists() || file.length() == 0){
             		CsvWriter csvOutput = new CsvWriter(new FileWriter(file, true), RecuperadorPropiedadedConfiguracionEntidad.getInstance().getSeparadorCSVREGEX().charAt(0));
     				csvOutput.write(cabecera);

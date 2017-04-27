@@ -14,10 +14,10 @@ import exit.services.json.JSONHandler;
 import exit.services.principal.peticiones.AbstractHTTP;
 import exit.services.principal.peticiones.EPeticiones;
 import exit.services.principal.peticiones.GetExistFieldURLQueryRightNow;
-import exit.services.principal.peticiones.GetVTEXOMS;
-import exit.services.principal.peticiones.GetVTEXMasterData;
 import exit.services.principal.peticiones.PostGenerico;
 import exit.services.principal.peticiones.UpdateGenericoRightNow;
+import exit.services.principal.peticiones.vtex.GetVTEXMasterData;
+import exit.services.principal.peticiones.vtex.GetVTEXOMS;
 import exit.services.singletons.ApuntadorDeEntidad;
 import exit.services.singletons.RecuperadorPropiedadedConfiguracionEntidad;
 

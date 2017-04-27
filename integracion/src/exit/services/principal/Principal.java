@@ -22,11 +22,14 @@ public class Principal {
 	
 
 	
-	
 	public static void main(String[] args) throws Exception {
 		long time_start, time_end;
     	time_start = System.currentTimeMillis();
-    	while(ApuntadorDeEntidad.getInstance().siguienteEntidad()){
+    	ApuntadorDeEntidad ap=ApuntadorDeEntidad.getInstance();
+    	if(ap==null)
+    		return;
+
+    	while(ap.siguienteEntidad()){
 	    	RecuperadorPropiedadedConfiguracionEntidad.getInstance().mostrarConfiguracion();
 	    	switch(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getAction().toUpperCase()){
 	    		case RecuperadorPropiedadedConfiguracionEntidad.ACCION_CSVASERVICIO:csvAServicio();break;
@@ -66,16 +69,19 @@ public class Principal {
 	private static void servicioACsv(){
 		Ejecutor e= new Ejecutor();
 		try{
+
 			Integer cantRegistros=-1;
 			RecuperadorMapeoCsv.getInstancia();
 			RecuperadorPropiedadedConfiguracionEntidad r= RecuperadorPropiedadedConfiguracionEntidad.getInstance();
+			if(RecuperadorPropiedadedConfiguracionEntidad.getInstance().isCreateEmptyFile())
+				CSVHandler.crearCabecer(DirectorioManager.getDirectorioFechaYHoraInicio(r.getOutputFile()),RecuperadorMapeoCsv.getInstancia().getCabecera() );
 			if(r.isPaginado()){
 				while(cantRegistros!=0){
 					try{
-					cantRegistros=(Integer)e.ejecutar(r.getMetodoEjecutor(),r.getParametroEjecutor());
-					r.incresePaginaActual();
-					System.out.println("Pagina actual: "+r.getPaginaActual());					
-					}catch(Exception ex){CSVHandler csv= new CSVHandler(); csv.escribirErrorException("Error en entidad: "+ApuntadorDeEntidad.getInstance().getEntidadActual(), ex.getStackTrace(),true);}
+						System.out.println("Pagina actual: "+r.getPaginaActual());					
+						cantRegistros=(Integer)e.ejecutar(r.getMetodoEjecutor(),r.getParametroEjecutor());
+						r.incresePaginaActual();
+						}catch(Exception ex){CSVHandler csv= new CSVHandler(); csv.escribirErrorException("Error en entidad: "+ApuntadorDeEntidad.getInstance().getEntidadActual(), ex.getStackTrace(),true);}
 				}
 			}
 			else{

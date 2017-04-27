@@ -51,7 +51,7 @@ public class DirectorioManager {
 	private static String getEntidadFecha(){
 		String outputPath=RecuperadorPropiedadedConfiguracionEntidad.getInstance().getOutPutPath();
 		if(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getOutput()!=EOutputs.DIRECTORIO)
-			outputPath=RecuperadorPropiedadedConfiguracionEntidad.OUTPUT_PATH_DEFAULT;
+			outputPath=ConstantesGenerales.PATH_EJECUCION;
 		return outputPath+"/"+ApuntadorDeEntidad.getInstance().getEntidadActual()+"/"+AlmacenadorFechaYHora.getFechaYHoraInicio();
 	}
 	public static File getDirectorioFechaYHoraInicio(String nombreFichero) throws IOException{
