@@ -7,11 +7,14 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.json.simple.JSONObject;
+
 import exit.services.excepciones.ExceptionBiactiva;
 import exit.services.fileHandler.CSVHandler;
 import exit.services.json.AbstractJsonRestEstructura;
 import exit.services.json.JSONHandler;
 import exit.services.principal.peticiones.AbstractHTTP;
+import exit.services.principal.peticiones.ConvertidorJson;
 import exit.services.principal.peticiones.EPeticiones;
 import exit.services.principal.peticiones.GetExistFieldURLQueryRightNow;
 import exit.services.principal.peticiones.PostGenerico;
@@ -117,7 +120,7 @@ public class Ejecutor {
 		return getVTEXGenerico.realizarPeticion(EPeticiones.GET,RecuperadorPropiedadedConfiguracionEntidad.getInstance().getUrl()+"?"+parametrosFianl);
 	}
 	
-	public Object ejecutorServicioACsvVTEXMasterData(String cantidadDias) throws UnsupportedEncodingException{
+	public Object ejecutorServicioACsvVTEXMasterData(String cantidadDias) throws Exception{
 		AbstractHTTP getGenerico= new GetVTEXMasterData();
 		String identificadorAtr=RecuperadorPropiedadedConfiguracionEntidad.getInstance().getIdentificadorAtributo();
 		String cabeceraUrl=RecuperadorPropiedadedConfiguracionEntidad.getInstance().getFiltros().replaceAll(identificadorAtr+"NRO_PAG"+identificadorAtr, String.valueOf(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getPaginaActual()));
@@ -128,9 +131,16 @@ public class Ejecutor {
 			parametrosFianl=cabeceraUrl;
 		else
 			parametrosFianl=cabeceraUrl+"&"+parametroDate;
-	
+		RecuperadorPropiedadedConfiguracionEntidad.getInstance().getCabecera();
 		System.out.println(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getUrl()+"/search?"+parametrosFianl);		
-		return getGenerico.realizarPeticion(EPeticiones.GET,RecuperadorPropiedadedConfiguracionEntidad.getInstance().getUrl()+"/search?"+parametrosFianl);
+		String cabecera=RecuperadorPropiedadedConfiguracionEntidad.getInstance().getCabecera();
+		JSONObject jsonCabecera= ConvertidorJson.convertir(cabecera);
+		Integer pag=RecuperadorPropiedadedConfiguracionEntidad.getInstance().getPaginaActual()-1;
+		Integer limiteInferior=pag*100;
+		Integer limiteSuperior=limiteInferior+100;
+		jsonCabecera.put("REST-Range", "resources="+limiteInferior+"-"+limiteSuperior);
+		System.out.println(jsonCabecera.toJSONString());
+		return getGenerico.realizarPeticion(EPeticiones.GET,RecuperadorPropiedadedConfiguracionEntidad.getInstance().getUrl()+"/search?"+parametrosFianl,null,null,jsonCabecera.toJSONString());
 	}
 	
 	

@@ -19,7 +19,7 @@
 				"name":"descriptarEmailVtex",
 				"params":{
 					"url":"http://conversationtracker.vtex.com.br/api/pvt/emailMapping",
-					"instancia":"compraciertacol"
+					"instancia":"compraciertacol,whirlpoolarg,compraciertaar,whirlpoolcol,kaidcol"
 				}
 			}
 		]

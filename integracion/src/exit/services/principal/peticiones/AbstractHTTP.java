@@ -15,34 +15,45 @@ import exit.services.singletons.entidadesARecuperar.RecuperadorPeticiones;
 
 public abstract class AbstractHTTP {
 	public Object realizarPeticion(EPeticiones httpMetodo){
-		return realizarPeticion(httpMetodo,RecuperadorPropiedadedConfiguracionEntidad.getInstance().getUrl(),null,null);
+		return realizarPeticion(httpMetodo,RecuperadorPropiedadedConfiguracionEntidad.getInstance().getUrl(),null,null,RecuperadorPropiedadedConfiguracionEntidad.getInstance().getCabecera());
 	}
 	
 	public Object realizarPeticion(EPeticiones httpMetodo, JSONHandler json){
-		return realizarPeticion(httpMetodo,RecuperadorPropiedadedConfiguracionEntidad.getInstance().getUrl(),null,json);
+		return realizarPeticion(httpMetodo,RecuperadorPropiedadedConfiguracionEntidad.getInstance().getUrl(),null,json,RecuperadorPropiedadedConfiguracionEntidad.getInstance().getCabecera());
+	}
+	public Object realizarPeticion(EPeticiones httpMetodo, JSONHandler json,String cabecera){
+		return realizarPeticion(httpMetodo,RecuperadorPropiedadedConfiguracionEntidad.getInstance().getUrl(),null,json,cabecera);
 	}
 
 	public Object realizarPeticion(EPeticiones httpMetodo,String url){
-		return realizarPeticion(httpMetodo,url,null,null);
+		return realizarPeticion(httpMetodo,url,null,null,RecuperadorPropiedadedConfiguracionEntidad.getInstance().getCabecera());
+	}
+
+	public Object realizarPeticion(EPeticiones httpMetodo,String url,String id){
+		return realizarPeticion(httpMetodo,url,id,null,RecuperadorPropiedadedConfiguracionEntidad.getInstance().getCabecera());
 	}
 	
 
 	
 	public Object realizarPeticion(EPeticiones httpMetodo, String url, JSONHandler json){
-		 return realizarPeticion(httpMetodo,url,null,json);
+		 return realizarPeticion(httpMetodo,url,null,json,RecuperadorPropiedadedConfiguracionEntidad.getInstance().getCabecera());
 	 }
-	 
-	public Object realizarPeticion(EPeticiones httpMetodo, String url,String id){
-		 return realizarPeticion(httpMetodo,url,id,null);
+	public Object realizarPeticion(EPeticiones httpMetodo, String url, JSONHandler json,String cabecera){
+		 return realizarPeticion(httpMetodo,url,null,json,cabecera);
+	 }
+	public Object realizarPeticion(EPeticiones httpMetodo, String url,String id,String cabecera){
+		 return realizarPeticion(httpMetodo,url,id,null, cabecera);
 	 }
 	
-	public Object realizarPeticion(EPeticiones httpMetodo, String url,String id,JSONHandler json){
+
+	
+	public Object realizarPeticion(EPeticiones httpMetodo, String url,String id,JSONHandler json,String cabecera){
 	        try{
 	        	WSConector ws;
 	        	if(id!=null)
-	        		 ws = new WSConector(httpMetodo,url+"/"+id);
+	        		 ws = new WSConector(httpMetodo,url+"/"+id,cabecera);
 	        	else
-	        		 ws = new WSConector(httpMetodo,url);
+	        		 ws = new WSConector(httpMetodo,url,cabecera);
 	        	HttpURLConnection conn=ws.getConexion();
 	        	if(json!=null){
 		        	DataOutputStream wr = new DataOutputStream(

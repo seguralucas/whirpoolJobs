@@ -20,9 +20,9 @@ public class WSConector {
 	 
 	 private URL url;
 	
-	 public WSConector(EPeticiones httpMethod,String url,String contentType) throws Exception{
+	 public WSConector(EPeticiones httpMethod,String url,String cabecera) throws Exception{
 		 	this.url = new URL(url);
-		 	initConecction(httpMethod,contentType);
+		 	initConecction(httpMethod,cabecera);
 	 }
 	 
 	 public WSConector(EPeticiones httpMethod,String url) throws Exception{
@@ -33,7 +33,7 @@ public class WSConector {
 		 	this(httpMethod,RecuperadorPropiedadedConfiguracionEntidad.getInstance().getUrl());
 	 }
 	
-	private void initConecction(EPeticiones httpMethod, String contentType) throws Exception{
+	private void initConecction(EPeticiones httpMethod, String cabecera) throws Exception{
 		HttpURLConnection conn=null;
 		if(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getUsaProxy().equalsIgnoreCase("SI")){
 			Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getIpProxy(), Integer.parseInt(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getPuertoProxy())));
@@ -58,8 +58,8 @@ public class WSConector {
 		if(peticion.getCabecera()!=null && peticion.getCabecera().length()>0)
 			try{completarCabecera(conn,ConvertidorJson.convertir(peticion.getCabecera()));}	catch (Exception e) {e.printStackTrace();}
 
-		if(contentType!=null)
-			conn.setRequestProperty("Content-Type", contentType);
+
+		
 		conn.setRequestProperty("charset", "UTF-8");
 		conn.setDoOutput(true);
 
@@ -68,7 +68,7 @@ public class WSConector {
 		String encoding = encode.encode(userPassword.getBytes());
 		conn.setRequestProperty("Authorization", "Basic " + encoding);	 
 		conn.setRequestProperty("OSvC-CREST-Suppress-All", "true");	 */
-		completarCabecera(conn,ConvertidorJson.convertir(RecuperadorPropiedadedConfiguracionEntidad.getInstance().getCabecera()));
+		completarCabecera(conn,ConvertidorJson.convertir(cabecera));
 		this.conexion= conn;
 		
 	}

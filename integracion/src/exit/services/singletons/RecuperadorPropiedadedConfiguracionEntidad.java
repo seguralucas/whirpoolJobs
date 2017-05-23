@@ -128,8 +128,6 @@ public class RecuperadorPropiedadedConfiguracionEntidad {
 	}
 	
 	public String getCabecera() {
-		if(getValueMap("separadorCSV")==null)
-			return RecuperadorPropiedadesConfiguracionGenerales.getInstance().getCabecera();
 		return getValueMap("cabecera");
 	}
 	

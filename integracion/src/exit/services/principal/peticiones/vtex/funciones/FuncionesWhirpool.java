@@ -56,7 +56,7 @@ public class FuncionesWhirpool {
 		return getVTEXGenerico.realizarPeticion(EPeticiones.GET,RecuperadorPropiedadedConfiguracionEntidad.getInstance().getUrl()+"?"+parametrosFianl);
 	}*/
 	
-	public String descriptarEmailVtex(String emailEncriptado, JSONObject params){
+/*	public String descriptarEmailVtex(String emailEncriptado, JSONObject params){
 		try{
 		String instancia=(String)params.get("instancia");
 		String url=(String)params.get("url");
@@ -77,7 +77,37 @@ public class FuncionesWhirpool {
 			}
 			return emailEncriptado;
 		}
+	}*/
+	
+	public String descriptarEmailVtex(String emailEncriptado, JSONObject params){
+		try{
+			String instancias[]=((String)params.get("instancia")).split(",");
+			String url=(String)params.get("url");
+			int i=0;
+			String result=emailEncriptado;
+			while(i<instancias.length && result.contains("ct.vtex.com.br")){
+				String instancia=instancias[i];
+				AbstractHTTP getEmailDescriptado= new GetVTEXEmailDesencriptado();
+				try{
+				String aux=(String)getEmailDescriptado.realizarPeticion(EPeticiones.GET,url+"?alias="+result+"&an="+instancia);
+				result=aux==null?result:aux;
+				}
+				catch(Exception e){
+					System.out.println("No descripto con: "+instancia);
+				}
+				i++;
+			}
+			if(result.contains("ct.vtex.com.br"))
+				System.out.println("Se va a guardar el mail encriptado");
+			else
+				System.out.println("Se logró desencriptar el e-mail");
+			return (String)result;
+		}
+		catch(Exception e){ 
+			return emailEncriptado;
+		}
 	}
+	
 	
 	
 	
